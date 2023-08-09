@@ -2,6 +2,7 @@ from src.item import Item
 
 if __name__ == '__main__':
     print('\n1 часть задания:\n')
+
     item = Item('Телефон', 10000, 5)
     print(item)
 
