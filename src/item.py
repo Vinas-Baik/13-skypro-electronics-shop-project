@@ -1,3 +1,8 @@
+import csv
+import os
+
+CSV_FILE = '..\src\items.csv'
+
 def nice_number_output(number) -> str:
     """
     возвращает красиво номер 100000.011 в виде "100 000.011'
@@ -32,6 +37,17 @@ def nice_number_output(number) -> str:
 
     return result
 
+def full_path_name_file(name_file):
+    """
+    формируем полный путь до файла
+    :param name_file: имя файла с указанием подпапки
+    :return: полный пусть в UNIX системы
+    """
+    # return os.getcwd() + '\\' + name_file
+    # return os.path.join(*name_file.replace('\\','/').split('/'))
+    # cur_path = os.path.dirname(__file__)
+    return os.path.realpath(name_file)
+
 
 class Item:
     """
@@ -49,10 +65,19 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине, по умолчанию 1
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
         Item.all.append(self)
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, new_name):
+        self.__name = new_name[:10]          # обрезаем до 10 символов
+
 
     def calculate_total_price(self) -> float:
         """
@@ -72,14 +97,41 @@ class Item:
         """
         метод __repr___
         """
-        return f"Item('{self.name}', {self.price}, {self.quantity})"
+        return f"Item('{self.__name}', {self.price}, {self.quantity})"
 
     def __str__(self):
         """
         метод __str___
         """
-        return f'{self.name} в количестве {self.quantity} шт ' \
+        return f'{self.__name} в количестве {self.quantity} шт ' \
                f'по цене {self.price} руб.'
+
+
+    @classmethod
+    def instantiate_from_csv(cls):
+        """
+        класс-метод, инициализирующий экземпляры класса Item данными из файла items.csv
+        """
+        cls.all = []
+        name_file = full_path_name_file(CSV_FILE)
+
+        with open(name_file, newline='') as file:
+            reader = csv.DictReader(file)
+                # item1 = my_item.Item("Смартфон", 10000, 20)
+                # name, price, quantity
+
+            for row in reader:
+                Item(row['name'], int(row['price']), int(row['quantity']))
+
+    @staticmethod
+    def string_to_number(text: str):
+        """
+        статический метод, возвращающий число из числа-строки
+        """
+        return int(float(text))
+
+
+
 
 # проверяем работу класса
 # temp_item = Item('Молоко 3,5%', 95, 5)
@@ -91,3 +143,9 @@ class Item:
 # print(f'{temp_item}, Итоговая сумма = {temp_item.calculate_total_price()} руб.')
 # print(nice_number_output(10000000))
 # print(nice_number_output(10000000.0111))
+
+# Item.instantiate_from_csv()
+# print(Item.all)
+# print(len(Item.all))
+# for row in Item.all:
+#     print(row)
