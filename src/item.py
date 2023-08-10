@@ -103,8 +103,9 @@ class Item:
         """
         метод __str___
         """
-        return f'{self.__name} в количестве {self.quantity} шт ' \
-               f'по цене {self.price} руб.'
+        # return f'{self.__name} в количестве {self.quantity} шт ' \
+        #        f'по цене {self.price} руб.'
+        return f'{self.__name}'
 
 
     @classmethod
