@@ -1,6 +1,28 @@
-"""Здесь надо написать тесты с использованием pytest для модуля item."""
+import src.phone as my_phone
 import src.item as my_item
 import pytest
+
+
+def test_class_phone():
+    temp_phone = my_phone.Phone('Смартфон', 100)
+    assert temp_phone.number_of_sim == 1
+    assert temp_phone.quantity == 1
+    temp_phone = my_phone.Phone('Смартфон', 100, 10, 2)
+    assert temp_phone.number_of_sim == 2
+    assert temp_phone.quantity == 10
+    temp_phone.name = '01234567890123456789'
+    assert temp_phone.name == '0123456789'
+    assert repr(temp_phone) == "Phone('0123456789', 100, 10, 2)"
+    temp_item = my_item.Item('Смартфон',100,5)
+    assert temp_phone + temp_item == 15
+    try:
+        temp_phone.number_of_sim == -1
+    except ValueError as v_err:
+        assert v_err.args[0] == 'Количество физических SIM-карт должно быть целым числом больше нуля'
+    try:
+        temp_phone.number_of_sim == 0.1
+    except ValueError as v_err:
+        assert v_err.args[0] == 'Количество физических SIM-карт должно быть целым числом'
 
 def test_class_item():
     # для первого домашнего задания
