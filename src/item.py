@@ -35,7 +35,7 @@ def nice_number_output(number) -> str:
             if i % 3 == 2:
                 result = ' ' + result
 
-    return result
+    return result.strip()
 
 def full_path_name_file(name_file):
     """
@@ -103,9 +103,12 @@ class Item:
         """
         метод __str___
         """
-        # return f'{self.__name} в количестве {self.quantity} шт ' \
-        #        f'по цене {self.price} руб.'
         return f'{self.__name}'
+
+    def my_str(self):
+        return f'{self.__name} в количестве {self.quantity} шт ' \
+               f'по цене {nice_number_output(self.price)} руб. - ' \
+               f'итоговая сумма {nice_number_output(self.price*self.quantity)} руб.'
 
 
     @classmethod
@@ -131,6 +134,10 @@ class Item:
         """
         return int(float(text))
 
+    def __add__(self, other):
+        if issubclass(self.__class__, Item) and issubclass(other.__class__, Item):
+            return self.quantity + other.quantity
+        raise TypeError('ошибка типов')
 
 
 
