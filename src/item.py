@@ -5,7 +5,7 @@ CSV_FILE = '..\src\items.csv'
 
 def nice_number_output(number) -> str:
     """
-    возвращает красиво номер 100000.011 в виде "100 000.011'
+    возвращает красиво номер 100000.011 в виде "100 000.011"
     """
     # 10200300.01          10200300         - исходная
     # 10.00300201          00300201         - переворот строки
@@ -76,6 +76,9 @@ class Item:
 
     @name.setter
     def name(self, new_name):
+        """
+        Сеттер переменной name с обрезкой имени в 10 символов
+        """
         self.__name = new_name[:10]          # обрезаем до 10 символов
 
 
@@ -106,6 +109,9 @@ class Item:
         return f'{self.__name}'
 
     def my_str(self):
+        """
+        Метод красивого отображения данных о товаре
+        """
         return f'{self.__name} в количестве {self.quantity} шт ' \
                f'по цене {nice_number_output(self.price)} руб. - ' \
                f'итоговая сумма {nice_number_output(self.price*self.quantity)} руб.'
@@ -135,6 +141,9 @@ class Item:
         return int(float(text))
 
     def __add__(self, other):
+        """
+        Магический метод сложения данных объектов класса с проверкой наследования объектов класса Item
+        """
         if issubclass(self.__class__, Item) and issubclass(other.__class__, Item):
             return self.quantity + other.quantity
         raise TypeError('ошибка типов')
