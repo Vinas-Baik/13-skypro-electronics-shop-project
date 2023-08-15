@@ -7,7 +7,9 @@ class Phone(Item):
         Магический метод для инициализации объекта класса с вызовом магического метода родительского класса
         """
         super().__init__(name, price, quantity)
-        self.__number_of_sim = number_of_sim
+        # проверка количества симкарт на целое и положительное количество
+        # предложение по проверке от Глеба Хомутова
+        self.number_of_sim = number_of_sim
 
     @property
     def number_of_sim(self):

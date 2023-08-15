@@ -33,6 +33,18 @@ if __name__ == '__main__':
     print()
     print(repr(phone1))
     print()
+    print('Создадим новый телефон с количеством симкарт = 0')
+    try:
+        phone2 = Phone("iPhone 15", 120_000, 5, 0)
+    except ValueError as v_err:
+        print(f'\033[31m{v_err.args[0]}\033[39m')
+
+    print('Создадим новый телефон с количеством симкарт = 0.1')
+    try:
+        phone2 = Phone("iPhone 15", 120_000, 5, 0.1)
+    except ValueError as v_err:
+        print(f'\033[31m{v_err.args[0]}\033[39m')
+
 
     print('Установим количество SIM-карт = 0 ')
     try:
