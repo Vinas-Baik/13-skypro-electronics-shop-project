@@ -30,6 +30,9 @@ def test_class_item():
     assert my_item.Item.string_to_number('10.0001') == 10
     assert my_item.Item.string_to_number('123.456789') == 123
 
+    for i in (1, '1', '1.1', 'Hello', (1, 1), {1: 1}):
+        with pytest.raises(TypeError):
+            temp_result = temp_item + i
 
 def test_nice_number_output():
     assert my_item.nice_number_output(10000000) == '10 000 000'

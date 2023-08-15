@@ -16,14 +16,22 @@ def test_class_phone():
     temp_item = my_item.Item('Смартфон',100,5)
     assert temp_phone + temp_item == 15
 
-    with pytest.raises(Exception):
-        temp_phone.number_of_sim == -1
-    with pytest.raises(Exception):
-        temp_phone.number_of_sim == 0.1
-    with pytest.raises(Exception):
-        temp_phone = my_phone.Phone('Смартфон', 100, 10, 0)
-    with pytest.raises(Exception):
-        temp_phone = my_phone.Phone('Смартфон', 100, 10, 0.1)
+    for i in (-1, 0, -0.1, 0.99):
+        with pytest.raises(ValueError):
+            temp_phone.number_of_sim = i
+    for i in (-1, 0, -0.1, 0.99):
+        with pytest.raises(ValueError):
+            temp_phone = my_phone.Phone('Смартфон', 100, 10, i)
+
+    temp_phone = my_phone.Phone('Смартфон', 100, 10, 2)
+
+    for i in (1, '1', '1.1', 'Hello', (1, 1), {1: 1}):
+        with pytest.raises(TypeError):
+            temp_result = temp_item + i
+
+    for i in (1, '1', '1.1', 'Hello', (1, 1), {1: 1}):
+        with pytest.raises(TypeError):
+            temp_result = temp_phone + i
 
     # try:
     # except ValueError as v_err:
@@ -61,6 +69,9 @@ def test_class_item():
     assert my_item.Item.string_to_number('10.0001') == 10
     assert my_item.Item.string_to_number('123.456789') == 123
 
+    for i in (1, '1', '1.1', 'Hello', (1, 1), {1: 1}):
+        with pytest.raises(TypeError):
+            temp_result = temp_item + i
 
 def test_nice_number_output():
     assert my_item.nice_number_output(10000000) == '10 000 000'
