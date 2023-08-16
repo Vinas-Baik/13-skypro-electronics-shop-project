@@ -17,9 +17,9 @@ class Keyboard(Item):
         self.__language = new_lng.upper()
 
     def change_lang(self):
-        if self.language.upper() == 'RU':
+        if self.__language.upper() == 'RU':
             self.language = 'EN'
-        if self.language.upper() == 'EN':
+        elif self.__language.upper() == 'EN':
             self.language = 'RU'
         return self
 

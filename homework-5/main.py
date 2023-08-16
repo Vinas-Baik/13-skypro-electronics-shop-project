@@ -19,7 +19,9 @@ if __name__ == '__main__':
     print(' \033[33mМеняем язык на RU \033[39m')
     kb.change_lang()
     assert str(kb.language) == "RU"
+    kb.change_lang()
     print(kb.my_str())
+    kb.change_lang()
     # Сделали RU -> EN -> RU
     # kb.change_lang()
     # kb.change_lang()
