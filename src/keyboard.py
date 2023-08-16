@@ -21,6 +21,7 @@ class Keyboard(Item):
             self.language = 'EN'
         if self.language.upper() == 'EN':
             self.language = 'RU'
+        return self
 
     def __repr__(self):
         """
@@ -28,3 +29,9 @@ class Keyboard(Item):
         """
         return (f"Keyboard('{self.name}', {self.price}, {self.quantity}, "
                 f"{self.__language})")
+
+    def my_str(self):
+        """
+        Метод красивого отображения данных о товаре
+        """
+        return f'{super().my_str()}, установлен язык - {self.language}'
