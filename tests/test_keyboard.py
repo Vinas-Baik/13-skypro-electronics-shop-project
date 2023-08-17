@@ -4,6 +4,9 @@ import pytest
 
 
 def test_class_phone():
+    temp_kb = my_kb.Keyboard('Logitech', 2000)
+    assert temp_kb.language == 'EN'
+    assert temp_kb.quantity == 1
     temp_kb = my_kb.Keyboard('Logitech', 2000, 5)
     assert temp_kb.language == 'EN'
     assert repr(temp_kb) == "Keyboard('Logitech', 2000, 5, EN)"

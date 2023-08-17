@@ -3,7 +3,7 @@ from src.item import Item
 class MixinLang:
     LANG = 'EN'
 
-    def __init__(self, name: str, price: float, quantity=1,):
+    def __init__(self, name, price, quantity):
         self.__language = self.LANG
         super().__init__(name, price, quantity)
 

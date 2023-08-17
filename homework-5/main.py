@@ -9,13 +9,20 @@ if __name__ == '__main__':
     #
 
     print('\n\t\033[33mСоздаем описание клавиатуры: \033[39m')
+    kb = Keyboard('Logitech', 2000)
+    assert kb.language == 'EN'
+    assert kb.quantity == 1
+    print(repr(kb))
+    print(kb.my_str())
+    print()
+
     kb = Keyboard('Dark Project KD87A', 9600, 5)
     print(repr(kb))
     print()
     assert str(kb) == "Dark Project KD87A"
     assert str(kb.language) == "EN"
-
     print(kb.my_str())
+
     print('\n\t\033[33mМеняем язык на RU \033[39m')
     kb.change_lang()
     assert str(kb.language) == "RU"
