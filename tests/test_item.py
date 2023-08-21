@@ -1,6 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import src.item as my_item
 import pytest
+import os
 
 def test_class_item():
     # для первого домашнего задания
@@ -20,7 +21,13 @@ def test_class_item():
     temp_item.name = '01234567890123'
     assert temp_item.name == '0123456789'
     assert temp_item+temp_item == 10
-    # assert temp_item+1 == TypeError('ошибка типов')
+
+    # Для шестого домашнего задания
+    # Файл ..\src\items-space_upper.csv - поля написаны с большой и маленькой
+    #                                     буквы с пробелами справа и слева,
+    #                                     значения полей также с пробелами
+    my_item.Item.instantiate_from_csv('..\src\items-space_upper.csv')
+    assert len(my_item.Item.all) == 5
 
     my_item.Item.instantiate_from_csv('..\src\items.csv')
     assert len(my_item.Item.all) == 5
@@ -33,6 +40,28 @@ def test_class_item():
     for i in (1, '1', '1.1', 'Hello', (1, 1), {1: 1}):
         with pytest.raises(TypeError):
             temp_result = temp_item + i
+
+    # Для шестого домашнего задания
+    # Файл ..\src\item.csv - не существует
+    with pytest.raises(FileNotFoundError):
+        my_item.Item.instantiate_from_csv('..\src\item.csv')
+
+
+
+    # Файл ..\src\items-err.csv - с ошибкой в имени поля
+    # Файл ..\src\items-err01.csv - нет одного из полей
+    # Файл ..\src\items-err02.csv - нет значений цены и количества
+    # Файл ..\src\items-err03.csv - поле цены - не число
+    # Файл ..\src\items-err04.csv - поля цены и количества есть, но они пустые
+    for csv_name in ['..\src\items-err.csv',
+                     '..\src\items-err01.csv',
+                     '..\src\items-err02.csv',
+                     '..\src\items-err03.csv',
+                     '..\src\items-err04.csv']:
+        with pytest.raises(my_item.InstantiateCSVError):
+            my_item.Item.instantiate_from_csv(csv_name)
+
+
 
 def test_nice_number_output():
     assert my_item.nice_number_output(10000000) == '10 000 000'

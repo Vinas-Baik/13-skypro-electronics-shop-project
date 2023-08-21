@@ -1,4 +1,4 @@
-from src.item import Item
+from src.item import Item, InstantiateCSVError,full_path_name_file
 
 if __name__ == '__main__':
 
@@ -17,10 +17,17 @@ if __name__ == '__main__':
                      '..\src\items-err.csv',
                      '..\src\items-err01.csv',
                      '..\src\items-err02.csv',
-                     '..\src\items-err03.csv']:
+                     '..\src\items-err03.csv',
+                     '..\src\items-err04.csv']:
         print(f'\033[33mРаботаем с файлом: \033[34m{csv_name}\033[39m')
-        print(Item.instantiate_from_csv(csv_name))
-        if Item.all != []:
+        try:
+            Item.instantiate_from_csv(csv_name)
+        except FileNotFoundError as t_err:
+            print(t_err)
+        except InstantiateCSVError as t_err:
+            print(t_err)
+        else:
+            print(f'\t\033[32mФайл {full_path_name_file(csv_name)} прочитан\t\033[39m')
             print('Прочитано из файла:', end='\n\t')
             print('\n\t'.join(t_item.my_str() for t_item in Item.all))
 

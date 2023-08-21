@@ -126,7 +126,7 @@ class Item:
 
 
     @classmethod
-    def instantiate_from_csv(cls, file_name_csv:str) -> str:
+    def instantiate_from_csv(cls, file_name_csv:str):
         """
         класс-метод, инициализирующий экземпляры класса Item данными из файла items.csv
         """
@@ -182,15 +182,11 @@ class Item:
 
         except FileNotFoundError:
             cls.all = []
-            return f'\t\033[31mОтсутствует файл {name_file}\033[39m'
+            raise FileNotFoundError(f'\t\033[31mОтсутствует файл {name_file}\033[39m')
 
         except InstantiateCSVError:
             cls.all = []
-            return f'\t\033[31mФайл {name_file} поврежден\033[39m'
-
-        else:
-            return f'\t\033[32mФайл {name_file} прочитан\t\033[39m'
-
+            raise InstantiateCSVError(f'\t\033[31mФайл {name_file} поврежден\033[39m')
 
 
     @staticmethod
