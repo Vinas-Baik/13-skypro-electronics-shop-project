@@ -22,7 +22,7 @@ def test_class_item():
     assert temp_item+temp_item == 10
     # assert temp_item+1 == TypeError('ошибка типов')
 
-    my_item.Item.instantiate_from_csv()
+    my_item.Item.instantiate_from_csv('..\src\items.csv')
     assert len(my_item.Item.all) == 5
     my_item.Item.all[0].name = 'Купи мама телефон'
     assert my_item.Item.all[0].name == 'Купи мама '

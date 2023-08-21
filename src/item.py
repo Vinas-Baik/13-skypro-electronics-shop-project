@@ -49,6 +49,14 @@ def full_path_name_file(name_file):
     return os.path.realpath(name_file)
 
 
+class InstantiateCSVError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл поврежден'
+
+    def __str__(self):
+        return self.message
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -118,20 +126,72 @@ class Item:
 
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls, file_name_csv:str) -> str:
         """
         класс-метод, инициализирующий экземпляры класса Item данными из файла items.csv
         """
         cls.all = []
-        name_file = full_path_name_file(CSV_FILE)
+        name_file = full_path_name_file(file_name_csv)
+        try:
+            with open(name_file, newline='') as file:
+                reader = csv.DictReader(file)
+                    # item1 = my_item.Item("Смартфон", 10000, 20)
+                    # name, price, quantity
 
-        with open(name_file, newline='') as file:
-            reader = csv.DictReader(file)
-                # item1 = my_item.Item("Смартфон", 10000, 20)
-                # name, price, quantity
+                # print(reader.fieldnames)
+                # print(len(reader.fieldnames))
+                # Преобразуем поля написанные разными буквами в маленькие с
+                # обрезкой по пробелам
+                #    NAme   -> name
+                #   PRiCe   -> price
+                for i in range(len(reader.fieldnames)):
+                    # print(f'{i} - {reader.fieldnames[i]}')
+                    reader.fieldnames[i] = reader.fieldnames[i].lower().strip()
+                    # print(f'{i} - {reader.fieldnames[i]}')
+                # print(reader.fieldnames)
+                # проверяем наличие полей в csv файле
 
-            for row in reader:
-                Item(row['name'], int(row['price']), int(row['quantity']))
+                is_field = ('name' in reader.fieldnames) and \
+                           ('price' in reader.fieldnames) and \
+                           ('quantity' in reader.fieldnames)
+
+                if not is_field:
+                    raise InstantiateCSVError
+
+                for row in reader:
+                    # print(row)
+                    t_price = row['price']
+                    t_quantity = row['quantity']
+                    # проверка на отсутствие значений цены и количества
+                    if (t_price == None) or (t_quantity == None):
+                        raise InstantiateCSVError
+
+                    t_price = t_price.strip()
+                    t_quantity = t_quantity.strip()
+
+                    # проверка на пустые значения цены и количества
+                    if (t_price == '') or (t_quantity == ''):
+                        raise InstantiateCSVError
+
+                    # проверка значений цены и количества на число
+                    if not t_price.isdecimal() or not t_quantity.isdecimal():
+                        raise InstantiateCSVError
+
+                    Item(row['name'].strip(), int(row['price'].strip()),
+                         int(row['quantity'].strip()))
+
+        except FileNotFoundError:
+            cls.all = []
+            return f'\t\033[31mОтсутствует файл {name_file}\033[39m'
+
+        except InstantiateCSVError:
+            cls.all = []
+            return f'\t\033[31mФайл {name_file} поврежден\033[39m'
+
+        else:
+            return f'\t\033[32mФайл {name_file} прочитан\t\033[39m'
+
+
 
     @staticmethod
     def string_to_number(text: str):

@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     print('\n2 часть задания:\n')
 
-    Item.instantiate_from_csv()  # создание объектов из данных файла
+    Item.instantiate_from_csv('..\src\items.csv')  # создание объектов из данных файла
     print(Item.all)
     assert len(Item.all) == 5  # в файле 5 записей с данными по товарам
 
